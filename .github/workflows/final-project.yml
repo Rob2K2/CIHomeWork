@@ -46,7 +46,7 @@ jobs:
 
       - name: Summary
         run: |
-          echo "✅ Imagen subida correctamente:"
+          echo "✅ Image uploaded successfully:"
           echo "- latest"
           echo "- ${{ env.TAG }}"
           echo "- ${{ github.ref_name }}"
