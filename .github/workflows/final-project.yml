@@ -7,7 +7,7 @@ on:
 
 jobs:
   build:
-    runs-on: [self-hosted, local-runner]
+    runs-on: [self-hosted, Windows, X64]
 
     steps:
       - name: Checkout code
