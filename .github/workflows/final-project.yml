@@ -7,6 +7,9 @@ on:
       - develop
       - release/*
 
+env:
+  DOCKER_IMAGE: rob2k2/cihomework
+
 jobs:
   build:
     runs-on: [self-hosted, Windows, X64]
@@ -21,11 +24,9 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Extract metadata (tags, labels)
-        id: meta
-        uses: docker/metadata-action@v5
-        with:
-          images: rob2k2/cihomework
+      - name: Generate image tag
+        id: version
+        run: echo "TAG=v$(date +'%Y.%m.%d')-${{ github.run_number }}" >> $GITHUB_ENV
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
@@ -33,6 +34,15 @@ jobs:
           context: .
           push: true
           tags: |
-            rob2k2/cihomework:latest
-            rob2k2/cihomework:${{ github.ref_name }}
-            rob2k2/cihomework:${{ github.sha }}
+            ${{ env.DOCKER_IMAGE }}:latest
+            ${{ env.DOCKER_IMAGE }}:${{ env.TAG }}
+            ${{ env.DOCKER_IMAGE }}:${{ github.ref_name }}
+            ${{ env.DOCKER_IMAGE }}:${{ github.sha }}
+
+      - name: Summary
+        run: |
+          echo "✅ Imagen subida correctamente:"
+          echo "- latest"
+          echo "- ${{ env.TAG }}"
+          echo "- ${{ github.ref_name }}"
+          echo "- ${{ github.sha }}"
