@@ -24,12 +24,14 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Generate image tag (Windows PowerShell)
+      - name: Generate image tag (Windows CMD)
         id: version
-        shell: pwsh
+        shell: cmd
         run: |
-          $tag = "v$(Get-Date -Format 'yyyy.MM.dd')-${{ github.run_number }}"
-          echo "TAG=$tag" >> $env:GITHUB_ENV
+          for /f "tokens=1-3 delims=/ " %%a in ("%date%") do (
+            set DATE=%%c.%%a.%%b
+          )
+          echo TAG=v%DATE%-${{ github.run_number }}>> %GITHUB_ENV%
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
