@@ -57,8 +57,8 @@ jobs:
 
       # 6️⃣ Wait a few seconds for container startup
       - name: Wait for container startup
-        shell: cmd
-        run: timeout /t 5
+        shell: powershell
+        run: Start-Sleep -Seconds 5
 
       # 7️⃣ Test container with curl (PowerShell)
       - name: Test container endpoint
